@@ -1,5 +1,6 @@
 package com.bext.flighttotheflux;
 
+import reactor.core.publisher.ConnectableFlux;
 import reactor.core.publisher.Flux;
 
 import javax.validation.constraints.NotNull;
@@ -27,12 +28,11 @@ public class DemoFluxReactor {
 
         System.out.println();
         //TODO 2 - Cold vs Hot
-        AtomicInteger count = new AtomicInteger();
+        final ConnectableFlux<String> connectableFlux = flux.publish();
 
-        Flux<Object> generate = Flux.generate(sink -> sink.next(count.incrementAndGet()));
-
-        generate.take(4).subscribe(e -> System.out.println("flux1 received: " +e), Throwable::printStackTrace);
-        generate.take(4).subscribe(e -> System.out.println("flux2 received: " +e), Throwable::printStackTrace);
+        connectableFlux.subscribe(e -> System.out.println("flux1 received: " +e), Throwable::printStackTrace);
+        connectableFlux.connect();
+        connectableFlux.subscribe(e -> System.out.println("flux2 received: " +e), Throwable::printStackTrace);
 
         System.out.println();
         //TODO 3 - PublishOn
