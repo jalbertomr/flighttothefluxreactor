@@ -36,7 +36,7 @@ public class DemoFluxReactor {
         //TODO 3 - PublishOn
         Scheduler scheduler = Schedulers.boundedElastic();
 
-        flux.publishOn(scheduler)
+        flux
             .doOnNext( e -> System.out.println("finally received " + e + " on thread " + Thread.currentThread().getName()))
             .subscribe();
 
