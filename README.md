@@ -1,6 +1,8 @@
 # flighttothefluxreactor
 A fast introduction to flux, Project Reactor
 
+https://www.youtube.com/watch?v=sNgTTcG-fEU&ab_channel=SpringDeveloper
+
 - Nothing happens until you subscribe
   Generate Flux Data:
     Flux.range(0,4).map(DemoFluxReactor::indexToName);
