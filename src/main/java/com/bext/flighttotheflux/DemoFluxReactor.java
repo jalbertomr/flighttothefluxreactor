@@ -3,6 +3,7 @@ package com.bext.flighttotheflux;
 import reactor.core.publisher.Flux;
 
 import javax.validation.constraints.NotNull;
+import java.time.Duration;
 
 public class DemoFluxReactor {
     private static String[] ARRAYSTRING = new String[]{
@@ -21,10 +22,11 @@ public class DemoFluxReactor {
         //TODO 1 - Nothing happens until you subscribe
         Flux<String> flux = Flux.range(0, 4)
                 .map(DemoFluxReactor::indexToName);
-        flux.subscribe(e -> System.out.println(e));
 
         System.out.println();
         //TODO 2 - Cold vs Hot
+        flux.subscribe(e -> System.out.println("flux1 received: " +e), Throwable::printStackTrace);
+        flux.subscribe(e -> System.out.println("flux2 received: " +e), Throwable::printStackTrace);
 
         System.out.println();
         //TODO 3 - PublishOn
