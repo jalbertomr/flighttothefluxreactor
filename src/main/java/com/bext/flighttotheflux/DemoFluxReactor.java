@@ -1,7 +1,10 @@
 package com.bext.flighttotheflux;
 
+import net.minidev.json.JSONUtil;
 import reactor.core.publisher.ConnectableFlux;
 import reactor.core.publisher.Flux;
+import reactor.core.scheduler.Scheduler;
+import reactor.core.scheduler.Schedulers;
 
 import javax.validation.constraints.NotNull;
 import java.time.Duration;
@@ -17,7 +20,7 @@ public class DemoFluxReactor {
     };
 
     private static String indexToName(@NotNull Integer i){
-        //System.out.println("getting element [" + i + "] from thread" + Thread.currentThread().getName());
+        System.out.println("getting element [" + i + "] from thread" + Thread.currentThread().getName());
         return ARRAYSTRING[i];
     }
 
@@ -28,23 +31,19 @@ public class DemoFluxReactor {
 
         System.out.println();
         //TODO 2 - Cold vs Hot
-        final ConnectableFlux<String> connectableFlux = flux.delayElements(Duration.ofMillis(250)).publish();
-
-        connectableFlux.subscribe(e -> System.out.println("flux1 received: " +e), Throwable::printStackTrace);
-        connectableFlux.connect();
-
-        Thread.sleep(750);
-        connectableFlux.subscribe(e -> System.out.println("flux2 received: " +e), Throwable::printStackTrace);
 
         System.out.println();
         //TODO 3 - PublishOn
+        Scheduler scheduler = Schedulers.boundedElastic();
+
+        flux.subscribe(System.out::println);
 
         System.out.println();
         //TODO 4 - SubscribeON
 
         System.out.println();
         //TODO 5 - One benefit of scheduler
-        Thread.sleep(5000);
+        Thread.sleep(5000);  //to avoid the main program finished before the fluxes finish
     }
 
 }
