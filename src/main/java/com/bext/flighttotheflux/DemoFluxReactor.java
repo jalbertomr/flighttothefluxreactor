@@ -21,7 +21,7 @@ public class DemoFluxReactor {
         //TODO 1 - Nothing happens until you subscribe
         Flux<String> flux = Flux.range(0, 4)
                 .map(DemoFluxReactor::indexToName);
-        flux.subscribe();
+        flux.subscribe(e -> System.out.println(e));
 
         System.out.println();
         //TODO 2 - Cold vs Hot
