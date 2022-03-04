@@ -4,6 +4,8 @@ import reactor.core.publisher.Flux;
 
 import javax.validation.constraints.NotNull;
 import java.time.Duration;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Predicate;
 
 public class DemoFluxReactor {
     private static String[] ARRAYSTRING = new String[]{
@@ -14,7 +16,7 @@ public class DemoFluxReactor {
     };
 
     private static String indexToName(@NotNull Integer i){
-        System.out.println("getting element [" + i + "] from thread" + Thread.currentThread().getName());
+        //System.out.println("getting element [" + i + "] from thread" + Thread.currentThread().getName());
         return ARRAYSTRING[i];
     }
 
@@ -25,8 +27,12 @@ public class DemoFluxReactor {
 
         System.out.println();
         //TODO 2 - Cold vs Hot
-        flux.subscribe(e -> System.out.println("flux1 received: " +e), Throwable::printStackTrace);
-        flux.subscribe(e -> System.out.println("flux2 received: " +e), Throwable::printStackTrace);
+        AtomicInteger count = new AtomicInteger();
+
+        Flux<Object> generate = Flux.generate(sink -> sink.next(count.incrementAndGet()));
+
+        generate.take(4).subscribe(e -> System.out.println("flux1 received: " +e), Throwable::printStackTrace);
+        generate.take(4).subscribe(e -> System.out.println("flux2 received: " +e), Throwable::printStackTrace);
 
         System.out.println();
         //TODO 3 - PublishOn
