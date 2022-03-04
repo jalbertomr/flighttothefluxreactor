@@ -36,7 +36,8 @@ public class DemoFluxReactor {
         //TODO 3 - PublishOn
         Scheduler scheduler = Schedulers.boundedElastic();
 
-        flux.subscribe(System.out::println);
+        flux.publishOn(scheduler)
+            .subscribe(System.out::println);
 
         System.out.println();
         //TODO 4 - SubscribeON
