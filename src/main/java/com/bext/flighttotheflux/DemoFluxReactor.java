@@ -28,10 +28,12 @@ public class DemoFluxReactor {
 
         System.out.println();
         //TODO 2 - Cold vs Hot
-        final ConnectableFlux<String> connectableFlux = flux.publish();
+        final ConnectableFlux<String> connectableFlux = flux.delayElements(Duration.ofMillis(250)).publish();
 
         connectableFlux.subscribe(e -> System.out.println("flux1 received: " +e), Throwable::printStackTrace);
         connectableFlux.connect();
+
+        Thread.sleep(750);
         connectableFlux.subscribe(e -> System.out.println("flux2 received: " +e), Throwable::printStackTrace);
 
         System.out.println();
