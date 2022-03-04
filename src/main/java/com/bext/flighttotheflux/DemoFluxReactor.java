@@ -44,7 +44,7 @@ public class DemoFluxReactor {
 
         System.out.println();
         //TODO 5 - One benefit of scheduler
-
+        Thread.sleep(5000);
     }
 
 }
